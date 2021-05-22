@@ -1,5 +1,6 @@
 var path=require('path');
 var express=require('express');
+var chalk=require('chalk');
 var hbs=require('hbs');
 var request=require('request');
 var geocode=require('../../weather_app/utils/geocode');
@@ -102,5 +103,5 @@ app.get('/*',(req,res)=>
 
 
 app.listen(3000, ()=>{
-    console.log("Server is up on port 3000");
+    console.log(chalk.green("Server is up on port 3000"));
 })
