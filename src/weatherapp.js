@@ -27,13 +27,63 @@ app.get('',(req,res)=>{
     });
 })
 
-
-app.get('/*',(req,res)=>
-{
-    res.render('404',{
-        error:'Error 404 : Not found'
+app.get('/weather',(req,res)=>{
+    if(!req.query.address)
+        {
+            return res.send({
+                error:"Address is not provided :("
+            })
+        }
+    
+    geocode(req.query.address,(error,data)=>
+    {
+        if(error)
+            {
+                return res.send({
+                    error:error
+                })
+            }
+        // res.send({
+        //     Address:data
+        // })
+        // console.log(data);
+        forecast(data.latitude,data.longitude,(error,data)=>
+        {
+            if(error)
+                {
+                    return res.send({
+                        error:error
+                    })
+                }
+            res.send({
+                forecast:data
+            })
+            // console.log(data); 
+        })
     })
 })
+
+
+app.get('/help/*',(req,res)=>
+{
+    res.render('404',{
+        error:'Help article is not found'
+    })
+})
+
+
+app.get('/products',(req,res)=>{
+    if(!req.query.search)
+        {
+            return res.send({
+                error: 'You must provide a search term'
+            });
+        }
+    res.send({
+        products:[]
+    });
+});
+
 
 
 app.listen(3000, ()=>{
